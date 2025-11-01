@@ -170,10 +170,6 @@ const seedColor = Color(0xFF3A70B7);     // Cor base do tema
 
 **Leovigildo** - _Desenvolvedor Flutter_
 
-- GitHub: [@seu-usuario](https://github.com/seu-usuario)
-    
-- LinkedIn: [Leovigildo](https://linkedin.com/in/leovigildo)
-    
 
 ## 📄 Licença
 
