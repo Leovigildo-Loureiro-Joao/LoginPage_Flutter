@@ -1,14 +1,12 @@
 # 📱 SmartControl - App de Login em Flutter
 
-<div align="center">
 
-[https://img.shields.io/badge/Flutter-3.19-blue?style=for-the-badge&logo=flutter](https://img.shields.io/badge/Flutter-3.19-blue?style=for-the-badge&logo=flutter)  
-[https://img.shields.io/badge/Dart-3.0-blue?style=for-the-badge&logo=dart](https://img.shields.io/badge/Dart-3.0-blue?style=for-the-badge&logo=dart)  
-[https://img.shields.io/badge/License-MIT-green?style=for-the-badge](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+![flutter](https://img.shields.io/badge/Flutter-3.19-blue?style=for-the-badge&logo=flutter)  ![https://img.shields.io/badge/Dart-3.0-blue?style=for-the-badge&logo=dart](https://img.shields.io/badge/Dart-3.0-blue?style=for-the-badge&logo=dart)  ![https://img.shields.io/badge/License-MIT-green?style=for-the-badge](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 **Uma aplicação de login elegante e funcional construída com Flutter**
 
-</div>
+
 
 ## 🚀 Sobre o Projeto
 
