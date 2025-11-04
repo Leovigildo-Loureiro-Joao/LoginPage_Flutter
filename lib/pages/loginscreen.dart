@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loginpage/main.dart';
-import 'ui/themes.dart';
-import 'widget/textField.dart';
+import 'package:loginpage/pages/main.dart';
+import '../ui/themes.dart';
+import '../widget/textField.dart';
 import 'homescreen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.title,required this.theme,required this.updateTheme});
