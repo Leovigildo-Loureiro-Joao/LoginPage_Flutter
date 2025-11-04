@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'theme.dart';
+import 'package:loginpage/main.dart';
+import 'ui/themes.dart';
+import 'widget/textField.dart';
 import 'homescreen.dart';
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.title,});
+  const LoginScreen({super.key, required this.title,required this.theme,required this.updateTheme});
   
   final String title;
+  final ThemeData theme;
+  final VoidCallback updateTheme;
+  
 
   @override
   State<LoginScreen> createState() => _MyHomePageState();
@@ -17,19 +22,22 @@ class _MyHomePageState extends State<LoginScreen> {
   WidgetStatesController button=WidgetStatesController();
   TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
-  bool erro=false;
+  IconData icone= Icons.light_mode;
+  List erro=[false,false];
+
+  IconData get iconeTema {
+    return widget.theme == Themes.lightTheme 
+        ? Icons.dark_mode 
+        : Icons.light_mode;
+  }
   // E ISSO TAMBÉM É LÓGICA! 👇  
   void fakeLogin() async {
     setState(() => isLoading = true);          // ✅ LÓGICA DE ESTADO
     await Future.delayed(Duration(seconds: 2)); // ✅ LÓGICA TEMPORAL
-    if (!emailController.text.contains("@") && emailController.text.length<1) {
-      print("Erro!!! email mal inserido");
-      erro=true;
-    }if (passwordController.text.length<6) {
-      print("Erro!!! password muito curta");
-      erro=true;
-    }
-    if (!erro) {
+    erro[0]=!emailController.text.contains("@");
+    erro[1]=passwordController.text.length<6;
+    
+    if (!erro[0]&&!erro[1]) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -38,19 +46,21 @@ class _MyHomePageState extends State<LoginScreen> {
     setState(() => isLoading = false);         // ✅ LÓGICA DE ESTADO
   }
 
+  aletrarTema(){
+    widget.updateTheme();
+    
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title:Text(
           widget.title,
-          style: TextStyle(
-            color: primaryColor,
-            fontWeight: FontWeight.bold
-
-          ),
+          style: Themes.titleText
+        ),
+        leading: IconButton(onPressed: aletrarTema, icon: Icon(icone),
         ),
       ),
       body: Align(
@@ -70,59 +80,39 @@ class _MyHomePageState extends State<LoginScreen> {
             Text(
               "Nossa maior prioridade e dar seguranca aos seus dados",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13
-              ),
+              style: icone==Icons.light_mode?Themes.bodyText:Themes.bodyTextDark
             ),
             SizedBox(height: 10),
             Column(
               children: [
-                TextField(
-                  
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: "Insira o seu email",
-                    suffixIcon: Icon(Icons.email),
-                    labelStyle: TextStyle(
-                      fontSize: 13
-                    )
+                inputUnderline(
+                  Icon(
+                    Icons.email
+                  ), 
+                  false, 
+                  "Insira o seu email", 
+                  erro[0], 
+                  emailController
                   ),
-                ),
-                 SizedBox(height: 20),
-                TextField(
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    labelText: "Insira a tua password",
-                    suffixIcon: Icon(
-                      Icons.password_sharp
-                    ),
-                    labelStyle: TextStyle(
-                      fontSize: 13
-                    )
-                    
+                SizedBox(height: 20),
+                inputUnderline(
+                  Icon(
+                    Icons.password
+                  ), 
+                  true, 
+                  "Insira a sua password", 
+                  erro[1], 
+                  passwordController
                   ),
-                ),
                  SizedBox(height: 30),
             isLoading?
             CircularProgressIndicator()
             :ElevatedButton(onPressed:fakeLogin, child: Text("Entrar"),
-
-                style: ButtonStyle(
-                  minimumSize: WidgetStatePropertyAll<Size>(
-                    Size(500,50)
-                  ) ,
-                 foregroundColor: WidgetStatePropertyAll<Color>(
-                    Colors.white
-                  ) ,
-                  backgroundColor:  WidgetStatePropertyAll<Color>(
-                    primaryColor
-                  ) 
-                ),
               )
               ],
             ),
-            TextButton(onPressed: ()=>{}, child: Text("Esqueceu sua senha?"))
+            SizedBox(height: 20,),
+            TextButton(onPressed: ()=>{}, child: Text("Esqueceu sua senha?",style: Themes.lightTheme.textTheme.bodySmall))
           ],
         ),
       ),
