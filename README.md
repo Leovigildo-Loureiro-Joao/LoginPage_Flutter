@@ -103,25 +103,19 @@ String decrypted = EncryptionService.decrypt(encryptedPassword);
 ## 🚀 Como Executar
 1. Clone e instale dependências
    ```bash
-
    git clone https://github.com/seu-usuario/securevault.git
    cd securevault
    flutter pub get
-
    ```
 2. Clone e instale dependências
    ```bash
-
    flutter pub run build_runner build
-
    ```
 
 3. Execute a aplicação
 
    ```bash
-
    flutter run
-
    ```
 ## 📱 Capturas de Tela
 
@@ -129,9 +123,9 @@ String decrypted = EncryptionService.decrypt(encryptedPassword);
 |---|---|---|
 |<img src="assets/screens/login.png" width="200">|<img src="assets/screens/dashboard.png" width="200">|<img src="assets/screens/gestorSenha.png" width="200">|
 
-|Adicionar Senha|Configurações|
-|---|---|
-|<img src="assets/screens/add_password.png" width="200">|<img src="assets/screens/settings.png" width="200">|
+|Adicionar Senha|Configurações|Cadastro|
+|---|---|---|
+|<img src="assets/screens/add_password.png" width="200">|<img src="assets/screens/settings.png" width="200">|<img src="assets/screens/cadastro.png" width="200">|
 
 ## 🔮 Próximas Funcionalidades
 

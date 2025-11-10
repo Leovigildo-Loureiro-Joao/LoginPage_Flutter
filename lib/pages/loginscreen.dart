@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:loginpage/main.dart';
+import 'package:loginpage/pages/singSreen.dart';
 import 'package:loginpage/services/appSettings.dart';
 import 'package:loginpage/services/biometryService.dart';
 import 'package:loginpage/services/secureStroregeService.dart';
@@ -221,6 +222,17 @@ class _MyHomePageState extends State<LoginScreen> {
               child: Text(
                 "Esqueceu sua senha?",
                 style: Theme.of(context).textTheme.bodySmall
+              )),
+              TextButton(
+                onPressed: ()=>{
+                   Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SingSreen(theme: Theme.of(context),updateTheme: widget.updateTheme,)),
+                  )
+                }, 
+                child: Text(
+                  "Criar conta",
+                  style: Theme.of(context).textTheme.bodySmall,
               ))
           ],
         ),

@@ -116,10 +116,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: widget.theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Container(
+          width: width > 600 ? 500 : double.infinity,
+          padding: EdgeInsets.all(width * 0.05),
           alignment: Alignment.center,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
