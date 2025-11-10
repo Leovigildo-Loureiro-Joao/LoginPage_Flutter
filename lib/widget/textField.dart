@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import "../ui/themes.dart";
 
-TextField inputUnderline(Icon icone,bool obscure,String text,bool error,TextEditingController controller) {
+TextField inputUnderline({required Widget icone,required bool obscure,required String text,required bool error,required TextEditingController controller,dynamic context}) {
   return TextField(
       obscureText: obscure,
       controller: controller,
+      style: TextStyle(
+        fontWeight: FontWeight.w400
+
+      ),
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
            borderSide: BorderSide(
@@ -14,8 +18,7 @@ TextField inputUnderline(Icon icone,bool obscure,String text,bool error,TextEdit
         ),
         labelText: text,
         suffixIcon:icone,
-        labelStyle: error?Themes.errorInput:Themes.bodyText
-        
+        labelStyle: error?Themes.errorInput:Theme.of(context).textTheme.bodySmall
       ),
     );
 }  
