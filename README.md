@@ -21,6 +21,7 @@ O **SecureVault** é uma aplicação completa de gestão de senhas que demonstra
 - 🔍 **Busca e Filtros** - Encontre senhas rapidamente
 - 🛡️ **Encriptação AES-256** - Proteção avançada
 - 📱 **UI Moderna** - Bottom Navigation e gestos
+- ❓ **Recuperação por Pergunta de Segurança** - Sem necessidade de email
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -45,17 +46,23 @@ lib/
 │ ├── create_master_screen.dart
 │ ├── main_screen.dart
 │ ├── add_password_screen.dart
+│ ├── security_question_screen.dart
 │ ├── dashboard_screen.dart
 │ └── settings_screen.dart
 ├── services/
 │ ├── encryption_service.dart
 │ ├── secure_storage_service.dart
-│ └── biometric_service.dart
+│ ├── biometric_service.dart
+│ ├── statsService.dart
+│ └── appSetings.dart
 ├── repositories/
 │ └── password_repository.dart
-└── ui/
-└── themes.dart
-
+├── ui/
+│ └── themes.dart
+├── widgets/
+│ ├── slideCard.dart
+│ ├── statsService.dart
+│ └── TypeWritterEraser.dart
 ```
 
 
@@ -81,6 +88,25 @@ lib/
 - Distribuição por categorias
 - Identificação de senhas fracas
 - Recomendações de segurança
+
+## 🛡️ Sistema de Recuperação
+- Perguntas Pré-definidas - 5 opções de segurança
+- Validação de Resposta - Verificação exata
+- Revelação Segura - Senha mestra mostrada apenas após verificação
+- Múltiplas Tentativas - Interface de erro amigável
+
+## 🎨 Interface e UX
+
+### Navegação Principal
+- Aba 1: Lista de Senhas com busca
+- Aba 2: Dashboard com estatísticas
+- Aba 3: Configurações e segurança
+
+### Componentes Personalizados
+- TypewriterWithCursor - Efeito de digitação
+- PasswordSearchDelegate - Busca nativa
+- Custom TextFields - Validação em tempo real
+- Strength Indicators - Feedback visual
 
 ## 🔐 Sistema de Segurança
 

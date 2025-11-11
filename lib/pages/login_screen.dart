@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:loginpage/main.dart';
-import 'package:loginpage/pages/singSreen.dart';
+import 'package:loginpage/pages/security_question_screen.dart';
+import 'package:loginpage/pages/sing_screen.dart';
 import 'package:loginpage/services/appSettings.dart';
 import 'package:loginpage/services/biometryService.dart';
 import 'package:loginpage/services/secureStroregeService.dart';
+import 'package:loginpage/widget/TypeWritterEraser.dart';
 import '../ui/themes.dart';
 import '../widget/textField.dart';
-import 'homescreen.dart';
+import 'home_screen.dart';
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key,required this.theme,required this.updateTheme});
+  const LoginScreen({super.key,required this.theme,required this.updateTheme,this.cadastrado});
 
   final ThemeData theme;
   final VoidCallback updateTheme;
-  
+  final bool? cadastrado;
 
   @override
   State<LoginScreen> createState() => _MyHomePageState();
@@ -71,17 +73,19 @@ class _MyHomePageState extends State<LoginScreen> {
   void fakeLogin() async {
     setState(() => isLoading = true);          // ✅ LÓGICA DE ESTADO
     await Future.delayed(Duration(seconds: 2)); // ✅ LÓGICA TEMPORAL
-    SecureStorageService.getMasterPassword().then((value) => {
-      erro=value!=passwordController.text
+    SecureStorageService.getMasterPassword().then((value) {
+      erro=value!=passwordController.text;
+       if (!erro) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen(theme: Theme.of(context),updateTheme: widget.updateTheme,)),
+        );
+      }
+      setState(() => isLoading = false);  
+      
     },);
     
-    if (!erro) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainScreen(theme: Theme.of(context),updateTheme: widget.updateTheme,)),
-      );
-    }
-    setState(() => isLoading = false);         // ✅ LÓGICA DE ESTADO
+          // ✅ LÓGICA DE ESTADO
   }
 
   @override
@@ -153,6 +157,8 @@ class _MyHomePageState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -164,23 +170,27 @@ class _MyHomePageState extends State<LoginScreen> {
           
       ),
       body: Align(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         child:Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(left: 10,right: 10),
         width: 500,
         margin: EdgeInsets.only(left: 20,right: 20),
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-             SizedBox(height: 20),
             Image(image: AssetImage("assets/login.png"),
-              width: 250,
+              width: height<500?width * 0:height*0.3,
             ),
             
-            Text(
-              "Nossa maior prioridade e dar seguranca aos seus dados",
+            TypewriterWithCursor(
+              text: "Nossa maior prioridade e dar seguranca aos seus dados.",
+              duration: Duration(milliseconds:1000),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                height: 1.4, // Melhor espaçamento
+              ),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall
+              cursorColor: ColorsApp.primaryColor,
             ),
             SizedBox(height: 10),
               if (_showBiometricOption) ...[
@@ -218,7 +228,12 @@ class _MyHomePageState extends State<LoginScreen> {
             ),
             SizedBox(height: 20,),
             TextButton(
-              onPressed: ()=>{}, 
+              onPressed: ()=>{
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SecurityQuestionScreen(),
+                  )
+              )}, 
               child: Text(
                 "Esqueceu sua senha?",
                 style: Theme.of(context).textTheme.bodySmall
@@ -227,7 +242,7 @@ class _MyHomePageState extends State<LoginScreen> {
                 onPressed: ()=>{
                    Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => SingSreen(theme: Theme.of(context),updateTheme: widget.updateTheme,)),
+                    MaterialPageRoute(builder: (context) => SingScreen(theme: Theme.of(context),updateTheme: widget.updateTheme,isFisrtTime: widget.cadastrado,)),
                   )
                 }, 
                 child: Text(

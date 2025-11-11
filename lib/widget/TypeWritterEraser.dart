@@ -83,18 +83,21 @@ class _TypewriterWithCursorState extends State<TypewriterWithCursor>
 
   @override
   Widget build(BuildContext context) {
+
     return Row(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: widget.textAlign == TextAlign.center 
           ? MainAxisAlignment.center 
           : widget.textAlign == TextAlign.right 
               ? MainAxisAlignment.end 
               : MainAxisAlignment.start,
       children: [
-        Text(
+        Flexible(child:  Text(
           _displayText,
           style: widget.style,
           textAlign: widget.textAlign,
-        ),
+          softWrap: true,
+        )),
         if (_showCursor && _typeController.status != AnimationStatus.completed)
           Container(
             width: 2,

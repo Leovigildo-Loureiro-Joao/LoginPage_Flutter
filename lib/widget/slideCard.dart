@@ -16,6 +16,8 @@ class Slidecard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -28,14 +30,13 @@ class Slidecard extends StatelessWidget {
                 child: SvgPicture.asset(
                   'assets/$svg',
                   fit: BoxFit.cover,
-                  height: 230,
-                  width: 230,
+                  width: height >600?230:height*0.2,
                 ),
               ),
             );
           },
         ),
-        const SizedBox(height: 20),
+        
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(

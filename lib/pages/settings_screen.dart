@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:loginpage/pages/homescreen.dart';
-import 'package:loginpage/pages/loginscreen.dart';
+import 'package:loginpage/pages/home_screen.dart';
+import 'package:loginpage/pages/login_screen.dart';
+import 'package:loginpage/pages/sing_screen.dart';
+import 'package:loginpage/repositories/PassordRepository.dart';
 import 'package:loginpage/services/appSettings.dart';
 import 'package:loginpage/services/biometryService.dart';
+import 'package:loginpage/services/secureStroregeService.dart';
 import 'package:loginpage/ui/themes.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -25,6 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isCheckingBiometrics = false;
   bool _biometricsAvailable = false;
   bool _darkMode = false;
+  final PasswordRepository _passwordRepo = PasswordRepository();
 
   @override
   void initState() {
@@ -63,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _toggleBiometria(bool value) async {
-    AppSettings.saveSettings(darkMode: _isDarkMode, biometricEnabled: _biometricsAvailable,backup_auto: _backupAutomatico);
+    AppSettings.saveSettings(darkMode: _darkMode, biometricEnabled: _biometricsAvailable,backup_auto: _backupAutomatico);
     if (value) {
       try {
         final authenticated = await BiometricService.authenticate();
@@ -85,16 +89,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   bool _backupAutomatico = false;
   
-  // ✅ VERIFICA SE O TEMA ATUAL É ESCURO
-  bool get _isDarkMode {
+
+  void _alternarTema() {
     setState(() {
       _darkMode=!_darkMode;
     });
-    return widget.theme.brightness == Theme.of(context).brightness;
-  }
-
-  void _alternarTema() {
-    AppSettings.saveSettings(darkMode: _isDarkMode, biometricEnabled: _biometricsAvailable,backup_auto: _backupAutomatico);
+    AppSettings.saveSettings(darkMode: _darkMode, biometricEnabled: _biometricsAvailable,backup_auto: _backupAutomatico);
     widget.updateTheme();
     setState(() {});
   }
@@ -104,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
-        color: Colors.orange[50],
+        color: _darkMode?const Color(0xFF8A7554): Colors.orange[50],
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -197,7 +197,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               setState(() {
                 _backupAutomatico = value;
-                AppSettings.saveSettings(darkMode: _isDarkMode, biometricEnabled: _biometricsAvailable,backup_auto: _backupAutomatico);
+                AppSettings.saveSettings(darkMode: _darkMode, biometricEnabled: _biometricsAvailable,backup_auto: _backupAutomatico);
               });
             },
             activeColor: ColorsApp.primaryColor,
@@ -276,54 +276,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   // ✅ DIALOG PARA ALTERAR SENHA MESTRA
   void _showChangeMasterPasswordDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Alterar Senha Mestra'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Senha Atual',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 12),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Nova Senha',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 12),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Confirmar Nova Senha',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Lógica para alterar senha
-              Navigator.pop(context);
-              _showSuccessMessage('Senha alterada com sucesso!');
-            },
-            child: Text('Alterar'),
-          ),
-        ],
+    SecureStorageService.isFirstTime().then((value) => 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SingScreen(theme: widget.theme,updateTheme: widget.updateTheme,isFisrtTime: value,),
       ),
-    );
+    ),);
   }
 
   // ✅ DIALOG DE SOBRE
@@ -413,9 +372,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           TextButton(
             onPressed: () {
               // Lógica para limpar dados
-              Navigator.pop(context);
+              SecureStorageService.clearAll();
+              _passwordRepo.init().then((value){
+                _passwordRepo.clearAll();
+                AppSettings.saveSettings(darkMode: false, biometricEnabled: false, backup_auto: false);
+                Navigator.pushReplacement (context, MaterialPageRoute(builder: (context) => LoginScreen(theme: Themes.lightTheme, updateTheme: widget.updateTheme,cadastrado: false,),));
               _showSuccessMessage('Dados limpos com sucesso!');
-            },
+              });
+              },
+              
             child: Text(
               'Limpar Tudo',
               style: TextStyle(color: Colors.red),

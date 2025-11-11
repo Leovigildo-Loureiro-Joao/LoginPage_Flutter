@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:loginpage/model/passordItem.dart';
 import 'package:loginpage/services/statsService.dart';
+import 'package:loginpage/widget/StateCard.dart';
 import '../ui/themes.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -19,7 +20,8 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stats = StatsService.calculateStats(passwords);
-    
+      final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
@@ -36,7 +38,7 @@ class DashboardScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // CARDS DE ESTATÍSTICAS PRINCIPAIS
-            _buildStatsGrid(stats, theme),
+            _buildStatsGrid(stats, theme,width),
             SizedBox(height: 24),
             
             // GRÁFICO DE DISTRIBUIÇÃO DE FORÇA
@@ -55,23 +57,24 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsGrid(Map<String, dynamic> stats, ThemeData theme) {
+  Widget _buildStatsGrid(Map<String, dynamic> stats, ThemeData theme,double width) {
+
     return GridView.count(
-      crossAxisCount: 2,
+      crossAxisCount: width<250?1:2,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       childAspectRatio: 1.2,
       children: [
-        _StatCard(
+        StatCard(
           title: 'Total de Senhas',
           value: '${stats['totalPasswords']}',
           icon: Icons.lock,
           color: Colors.blue,
           theme: theme,
         ),
-       _StatCard(
+       StatCard(
         title: 'Força Média',
         value: '${stats['averageStrength']}/5',
         icon: Icons.security,
@@ -83,14 +86,14 @@ class DashboardScreen extends StatelessWidget {
         ),
         theme: theme,
       ),
-        _StatCard(
+        StatCard(
           title: 'Senhas Fracas',
           value: '${stats['weakPasswords']}',
           icon: Icons.warning,
           color: Colors.orange,
           theme: theme,
         ),
-        _StatCard(
+        StatCard(
           title: 'Adições Recentes',
           value: '${stats['recentAdded']}',
           icon: Icons.trending_up,
@@ -290,62 +293,9 @@ class DashboardScreen extends StatelessWidget {
   Color _getAverageStrengthColor(double average) {
     if (average >= 4) return Colors.green;
     if (average >= 3) return Colors.lightGreen;
-    if (average >= 2) return Colors.yellow;
+    if (average >= 2) return const Color(0xFFF3DB00);
     return Colors.orange;
   }
 }
 
 // Widget de Card de Estatística
-class _StatCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final IconData icon;
-  final Color color;
-  final ThemeData theme;
-
-  const _StatCard({
-    required this.title,
-    required this.value,
-    required this.icon,
-    required this.color,
-    required this.theme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: theme.cardTheme.color,
-      elevation: 2,
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            SizedBox(height: 12),
-            Text(
-              value,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              title,
-              style: theme.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

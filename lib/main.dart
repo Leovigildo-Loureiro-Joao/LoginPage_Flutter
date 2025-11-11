@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:loginpage/model/passordItem.dart';
-import 'package:loginpage/pages/welcomescreen.dart';
+import 'package:loginpage/pages/welcome_screen.dart';
 import 'package:loginpage/services/appSettings.dart';
 import 'package:loginpage/services/secureStroregeService.dart';
 import 'package:loginpage/ui/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'pages/loginscreen.dart';
+import 'pages/login_screen.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,16 +62,41 @@ class _MainState extends State<MyApp> {
 
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: _currentTheme,
-      home: (SecureStorageService.isFirstTime==null)
-            ?WelcomeScreen(theme: _currentTheme, switchTheme: _switchTheme,)  
-            :LoginScreen(theme: _currentTheme, updateTheme: _switchTheme)
-    );
-  }
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Flutter Demo',
+    debugShowCheckedModeBanner: false,
+    theme: _currentTheme,
+    home: FutureBuilder<bool>(
+      future: SecureStorageService.isFirstTime(),
+      builder: (context, snapshot) {
+        // ✅ Enquanto carrega
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        
+        // ✅ Quando tem dados
+        if (snapshot.hasData) {
+          final isFirstTime = snapshot.data!;
+          return isFirstTime 
+              ? WelcomeScreen(theme: _currentTheme, switchTheme: _switchTheme,cadastrado: isFirstTime,)
+              : LoginScreen(theme: _currentTheme, updateTheme: _switchTheme,cadastrado: isFirstTime);
+        }
+        
+        // ✅ Em caso de erro
+        return Scaffold(
+          body: Center(
+            child: Text('Erro ao carregar'),
+          ),
+        );
+      },
+    ),
+  );
+}
   
 }
 

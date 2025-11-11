@@ -6,6 +6,8 @@ class SecureStorageService {
   
   static const _masterPasswordKey = 'master_password';
   static const _isFirstTimeKey = 'is_first_time';
+  static const _securityQuestionKey = 'security_question';
+  static const  _securityAnswerKey = 'security_answer';
 
   // ✅ SALVA SENHA MESTRA (SEGURA)
   static Future<void> saveMasterPassword(String password) async {
@@ -14,6 +16,20 @@ class SecureStorageService {
       value: password,
     );
     print('🔐 Senha mestra salva com segurança');
+  }
+
+  static Future<void> setSecurityQuestion(String question, String answer) async {
+    _storage.write(key: _securityQuestionKey,value: question);
+    _storage.write(key: _securityAnswerKey,value: answer);
+  }
+
+  static Future<String?>  getSecurityQuestion() async {
+    return await _storage.read(key: _securityQuestionKey);
+  }
+
+  static Future<bool?> verifySecurityAnswer(String answer) async{
+    final savedAnswer = await _storage.read(key: _securityAnswerKey);
+    return savedAnswer == answer;
   }
 
   // ✅ OBTÉM SENHA MESTRA

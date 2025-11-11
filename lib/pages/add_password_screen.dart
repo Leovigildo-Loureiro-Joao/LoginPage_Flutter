@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loginpage/model/passordItem.dart';
 import 'package:loginpage/repositories/PassordRepository.dart';
-import 'package:loginpage/services/EncryptionService.dart';
+import 'package:loginpage/services/encryptionService.dart';
 
 class AddPasswordScreen extends StatefulWidget {
   final PasswordItem? password;
@@ -209,7 +209,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
     );
   }
 
-  // ✅ WIDGET PARA SELECIONAR ÍCONE
+
   Widget _buildIconSelector() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,7 +284,6 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
     );
   }
 
-  // ✅ WIDGET PARA SELECIONAR CATEGORIA
   Widget _buildCategorySelector() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:loginpage/pages/loginscreen.dart';
-import 'package:loginpage/pages/singSreen.dart';
+import 'package:loginpage/pages/login_screen.dart';
+import 'package:loginpage/pages/sing_screen.dart';
 import 'package:loginpage/ui/themes.dart';
 
 import '../widget/slideCard.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  final bool? cadastrado;
   const WelcomeScreen({
     super.key,
     required this.theme,
     required this.switchTheme,
+    this.cadastrado
   });
 
   final ThemeData theme;
@@ -110,7 +112,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void fakeSession() async{
      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen(theme: widget.theme,updateTheme: widget.switchTheme)),
+        MaterialPageRoute(builder: (context) => LoginScreen(theme: widget.theme,updateTheme: widget.switchTheme,cadastrado: widget.cadastrado,)),
       );
   }
 
@@ -127,10 +129,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           width: width > 600 ? 500 : double.infinity,
           padding: EdgeInsets.all(width * 0.05),
           alignment: Alignment.center,
+          transformAlignment: Alignment.center,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-               const SizedBox(height: 30),
               Text(
                 "Gestor de senhas",
                 style: Themes.titleText,
@@ -138,6 +140,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               const SizedBox(height: 30),
               
               // **CAROUSEL**
+              
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
@@ -167,30 +170,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   },
                 ),
               ),
-              
-              // **INDICADORES**
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  _slides.length,
-                  (index) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _currentPage == index 
-                          ? Colors.blue 
-                          : Colors.grey.withOpacity(0.4),
-                    ),
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                SizedBox(height: height * 0.05),
+                Wrap(
+                  runSpacing: 20,
                   spacing: 20,
                   children:[
                   ElevatedButton( 
@@ -211,7 +193,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ]
               ),
-                       const SizedBox(height: 50),
+              SizedBox(height: height * 0.02),
             ],
           ),
         ),
@@ -221,6 +203,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   void fakeCreateSession() {
     Navigator.pushReplacement(context, 
-    MaterialPageRoute(builder: (context) => SingSreen(theme: widget.theme, updateTheme: widget.switchTheme)));
+    MaterialPageRoute(builder: (context) => SingScreen(theme: widget.theme, updateTheme: widget.switchTheme,isFisrtTime: widget.cadastrado,)));
   }
 }
