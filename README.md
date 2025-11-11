@@ -151,7 +151,11 @@ String decrypted = EncryptionService.decrypt(encryptedPassword);
 
 |Adicionar Senha|Configurações|Cadastro|
 |---|---|---|
-|<img src="assets/screens/add_password.png" width="200">|<img src="assets/screens/settings.png" width="200">|<img src="assets/screens/cadastro.png" width="200">|
+|<img src="assets/screens/add_password.png" width="200">|<img src="assets/screens/settings.png" width="200">|<img src="assets/screens/sing.png" width="200">|
+
+|Esqueceu senha|Welcome|
+|---|---|
+|<img src="assets/screens/unknow.png" width="200">|<img src="assets/screens/welcome.png" width="200">|
 
 ## 🔮 Próximas Funcionalidades
 

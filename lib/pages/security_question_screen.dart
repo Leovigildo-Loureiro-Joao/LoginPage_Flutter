@@ -121,7 +121,10 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
 
   Widget _buildNoQuestionConfigured() {
     return Center(
-      child: Column(
+      child: Container(
+        width: 500,
+        padding: EdgeInsets.all(16),
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.error_outline, size: 64, color: Colors.orange),
@@ -147,6 +150,7 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
           ),
         ],
       ),
+    )
     );
   }
 
