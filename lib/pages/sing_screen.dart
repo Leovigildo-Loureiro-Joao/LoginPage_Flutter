@@ -124,6 +124,7 @@ class _MySingScreen extends State<SingScreen> {
     super.initState();
     
     // Carregar pergunta de segurança existente se estiver editando
+    print(widget.isFisrtTime);
     if (widget.isFisrtTime == false) {
       _loadExistingSecurityQuestion();
     }
@@ -131,6 +132,7 @@ class _MySingScreen extends State<SingScreen> {
 
   void _loadExistingSecurityQuestion() async {
     final question = await SecureStorageService.getSecurityQuestion();
+    print(question);
     if (question != null && mounted) {
       setState(() {
         _selectedQuestion = question;

@@ -319,7 +319,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // ✅ CONFIRMAÇÃO PARA SAIR
+  // ✅ CONFIRMAÇÃO PARA SAIR - CORRIGIDO
   void _showLogoutConfirmation() {
     showDialog(
       context: context,
@@ -333,15 +333,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushReplacement(
+              // ✅ CORREÇÃO: Remove toda a pilha de navegação
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => LoginScreen(
                     theme: widget.theme,
                     updateTheme: widget.updateTheme,
+                    cadastrado: true,
                   ),
                 ),
+                (route) => false, // Remove todas as rotas anteriores
               );
             },
             child: Text(
@@ -354,7 +356,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // ✅ CONFIRMAÇÃO PARA LIMPAR DADOS
+  // ✅ CONFIRMAÇÃO PARA LIMPAR DADOS - CORRIGIDO
   void _showClearDataConfirmation() {
     showDialog(
       context: context,
@@ -376,11 +378,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _passwordRepo.init().then((value){
                 _passwordRepo.clearAll();
                 AppSettings.saveSettings(darkMode: false, biometricEnabled: false, backup_auto: false);
-                Navigator.push (context, MaterialPageRoute(builder: (context) => LoginScreen(theme: Themes.lightTheme, updateTheme: widget.updateTheme,cadastrado: false,),));
-              _showSuccessMessage('Dados limpos com sucesso!');
+                
+                // ✅ CORREÇÃO: Remove toda a pilha de navegação
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(
+                      theme: Themes.lightTheme, 
+                      updateTheme: widget.updateTheme,
+                      cadastrado: true,
+                    ),
+                  ),
+                  (route) => false, // Remove todas as rotas anteriores
+                );
+                
+                _showSuccessMessage('Dados limpos com sucesso!');
               });
-              },
-              
+            },
             child: Text(
               'Limpar Tudo',
               style: TextStyle(color: Colors.red),
