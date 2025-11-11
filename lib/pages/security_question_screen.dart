@@ -1,6 +1,7 @@
 // Tela de recuperação de senha mestra
 import 'package:flutter/material.dart';
 import 'package:loginpage/services/secureStroregeService.dart';
+import 'package:loginpage/ui/themes.dart';
 
 class SecurityQuestionScreen extends StatefulWidget {
   const SecurityQuestionScreen({super.key});
@@ -94,11 +95,13 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
           ? Center(child: CircularProgressIndicator())
           : _savedQuestion == null
               ? _buildNoQuestionConfigured()
-              : Padding(
+              : Center(child: Container(
+                  width: 500,
                   padding: EdgeInsets.all(16),
                   child: Form(
                     key: _formKey,
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (!_showPassword) ...[
@@ -111,6 +114,7 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
                       ],
                     ),
                   ),
+                )
                 ),
     );
   }
@@ -269,7 +273,7 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
                   width: double.infinity,
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                     color: Theme.of(context).brightness==Themes.darkTheme.brightness ?const Color.fromARGB(255, 64, 158, 9) : Colors.white,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.green),
                   ),

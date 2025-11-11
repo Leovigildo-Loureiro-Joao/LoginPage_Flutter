@@ -51,8 +51,6 @@ class _MainState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _debugSharedPreferences();
-    _debugHive();
     AppSettings.loadSettings().then((value) {
       if (value["darkMode"]!=null&&value["darkMode"]!) {
         _switchTheme();
@@ -98,33 +96,4 @@ Widget build(BuildContext context) {
   );
 }
   
-}
-
-
-
-// No SettingsScreen ou onde quiseres ver
-void _debugSharedPreferences() async {
-  final prefs = await SharedPreferences.getInstance();
-  print('=== SHARED_PREFERENCES DEBUG ===');
-  print('Todas as chaves: ${prefs.getKeys()}');
-  
-  for (String key in prefs.getKeys()) {
-    print('$key: ${prefs.get(key)}');
-  }
-  print('================================');
-}
-
-// Chama onde quiseres:
-// No MainScreen ou PasswordRepository
-void _debugHive() {
-  final passwordsBox = Hive.box<PasswordItem>('passwords');
-  print('=== HIVE DEBUG ===');
-  print('Total de senhas: ${passwordsBox.length}');
-  print('Chaves: ${passwordsBox.keys}');
-  
-  for (var key in passwordsBox.keys) {
-    final item = passwordsBox.get(key);
-    print('$key: ${item?.title} - ${item?.username}');
-  }
-  print('========================');
 }

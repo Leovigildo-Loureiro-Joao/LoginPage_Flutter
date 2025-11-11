@@ -125,11 +125,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Scaffold(
       backgroundColor: widget.theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: Container(
-          width: width > 600 ? 500 : double.infinity,
+        child: Center(
+          child: Container(
+          width: 500,
           padding: EdgeInsets.all(width * 0.05),
-          alignment: Alignment.center,
-          transformAlignment: Alignment.center,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -197,6 +196,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ],
           ),
         ),
+        )
+        
       ),
     );
   }

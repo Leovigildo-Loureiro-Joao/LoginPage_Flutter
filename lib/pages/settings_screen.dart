@@ -376,7 +376,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _passwordRepo.init().then((value){
                 _passwordRepo.clearAll();
                 AppSettings.saveSettings(darkMode: false, biometricEnabled: false, backup_auto: false);
-                Navigator.pushReplacement (context, MaterialPageRoute(builder: (context) => LoginScreen(theme: Themes.lightTheme, updateTheme: widget.updateTheme,cadastrado: false,),));
+                Navigator.push (context, MaterialPageRoute(builder: (context) => LoginScreen(theme: Themes.lightTheme, updateTheme: widget.updateTheme,cadastrado: false,),));
               _showSuccessMessage('Dados limpos com sucesso!');
               });
               },
